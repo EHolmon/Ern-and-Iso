@@ -1,0 +1,35 @@
+<section id="episodes">
+    <h2>Episodes</h2>
+    <p>Listen to us on your favorite platform!</p>
+    <a class="btn" href="https://podcasts.apple.com/us/podcast/ern-and-iso/id1607761096" target="_blank">Apple Podcasts</a>
+    <a class="btn" href="https://open.spotify.com/show/4ORo29HFhxs7SGQgZUv0He?si=3b5c9b6855d94c7b" target="_blank">Spotify Audio & Video</a>
+    <div id="rss-episodes">
+        <h3>Latest Episodes</h3>
+        <ul id="episode-list"></ul>
+    </div>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/?listType=playlist&list=PL-your-playlist-id" title="YouTube Playlist" frameborder="0" allowfullscreen></iframe>
+</section>
+
+<script>
+    const rssUrl = 'YOUR_RSS_FEED_URL'; // Replace with your RSS feed URL
+
+    async function fetchEpisodes() {
+        try {
+            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+            const data = await response.json();
+
+            if (data && data.items) {
+                const episodeList = document.getElementById('episode-list');
+                data.items.slice(0, 5).forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+                    episodeList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching RSS feed:', error);
+        }
+    }
+
+    fetchEpisodes();
+</script>
